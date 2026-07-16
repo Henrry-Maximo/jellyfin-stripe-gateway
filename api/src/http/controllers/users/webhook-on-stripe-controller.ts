@@ -21,10 +21,23 @@ export async function WebhookOnStripe(
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
-    const { email, username, password } = session.metadata!;
+    const { username, password } = session.metadata!;
 
-    // TODO: criar usuário no Jellyfin com email, username, password
-    console.log({ email, username, password });
+    const response = await fetch(`${env.JELLYFIN_URL}/Users/New`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `MediaBrowser Token="${env.JELLYFIN_API_KEY}"`,
+      },
+      body: JSON.stringify({ Name: username, Password: password }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Erro na criação do usuário: ${response.status} - ${errorText}`,
+      );
+    }
   }
 
   return reply.status(200).send();

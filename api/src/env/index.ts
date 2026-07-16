@@ -9,6 +9,8 @@ const envSchema = z.object({
   STRIPE_PRICE_ID: z.string(),
   STRIPE_WEBHOOK_SECRET: z.string(),
   FRONTEND_URL: z.string(),
+  JELLYFIN_URL: z.string(),
+  JELLYFIN_API_KEY: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);
