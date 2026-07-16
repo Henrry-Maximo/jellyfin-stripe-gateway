@@ -24,11 +24,13 @@ const checkoutForm = z.object({
   username: z
     .string()
     .min(1, 'Username obrigatório')
-    .max(38, 'Username deve ter no máximo 38 caracteres.'),
+    .max(38, 'Username deve ter no máximo 38 caracteres.')
+    .regex(/^[a-zA-Z0-9_]+$/, 'Username só pode conter letras, números e _'),
   password: z
     .string()
-    .min(4, 'Senha deve ter no mínimo 6 caracteres')
-    .max(32, 'Senha deve ter no máximo 32 caracteres.'),
+    .min(4, 'Senha deve ter no mínimo 4 caracteres')
+    .max(32, 'Senha deve ter no máximo 32 caracteres.')
+    .regex(/^\S+$/, 'Senha não pode conter espaços'),
 });
 
 type CheckoutForm = z.infer<typeof checkoutForm>;
