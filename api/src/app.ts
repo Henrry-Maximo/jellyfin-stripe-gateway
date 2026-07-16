@@ -13,6 +13,7 @@ import {
 } from "fastify-type-provider-zod";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import fastifyRawBody from "fastify-raw-body";
 
 export const app = fastify({
   logger:
@@ -47,6 +48,11 @@ app.register(fastifySwagger, {
 
 app.register(fastifySwaggerUi, {
   routePrefix: "/docs",
+});
+
+app.register(fastifyRawBody, {
+  global: false, // só ativa nas rotas que pedirem
+  encoding: false, // mantém como Buffer
 });
 
 app.register(appRoutes);

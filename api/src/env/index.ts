@@ -7,6 +7,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3333),
   STRIPE_SECRET_KEY: z.string(),
   STRIPE_PRICE_ID: z.string(),
+  STRIPE_WEBHOOK_SECRET: z.string(),
   FRONTEND_URL: z.string(),
 });
 

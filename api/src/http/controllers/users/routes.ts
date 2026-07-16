@@ -1,6 +1,7 @@
 import z from "zod";
 import { FastifyTypedInstance } from "@/types";
 import { CheckoutOnStripe } from "./checkout-on-stripe-controller";
+import { WebhookOnStripe } from "./webhook-on-stripe-controller";
 
 export async function usersRoutes(app: FastifyTypedInstance) {
   app.post(
@@ -29,18 +30,15 @@ export async function usersRoutes(app: FastifyTypedInstance) {
   app.post(
     "/webhook",
     {
+      config: { rawBody: true },
       schema: {
-        tags: ["users"],
-        description: "Receive event Stripe with Sign",
+        tags: ["stripe"],
+        description: "Receive Stripe webhook event",
         response: {
-          201: z
-            .object({
-              url: z.string(),
-            })
-            .describe("User created on Jellyfin."),
+          200: z.object({}).describe("Event received."),
         },
       },
     },
-    CheckoutOnStripe,
+    WebhookOnStripe,
   );
 }
