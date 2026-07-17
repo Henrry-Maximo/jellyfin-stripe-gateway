@@ -36,17 +36,17 @@ export async function CheckoutOnStripe(
     }
 
     const token = randomUUID();
-    const key = await redisClient.set(
+    await redisClient.set(
       token,
       JSON.stringify({ username, password, email }),
       "EX", // próximo parâmetro é o tempo de expiração
       60 * 60, // 1 hora em segundos
     );
-    
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: env.STRIPE_PRICE_ID, quantity: 1 }],
-      metadata: { key },
+      metadata: { token },
       success_url: `${env.FRONTEND_URL}/success`,
       cancel_url: `${env.FRONTEND_URL}/cancel`,
     });

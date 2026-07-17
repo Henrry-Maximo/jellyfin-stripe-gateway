@@ -23,6 +23,7 @@ export async function WebhookOnStripe(
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
     const { key } = session.metadata! as { key: string };
+    // console.log("chave: ", key);
 
     const data = await redisClient.get(key);
 
