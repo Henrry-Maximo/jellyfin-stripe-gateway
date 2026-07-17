@@ -3,20 +3,20 @@ import { stripe } from "@/lib/stripe";
 import { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 
+export const CheckoutBodySchema = z.object({
+  email: z.email(),
+  username: z.string().max(38),
+  password: z.string().min(4).max(32),
+});
+
+type checkoutBody = z.infer<typeof CheckoutBodySchema>;
+
 export async function CheckoutOnStripe(
-  req: FastifyRequest,
+  req: FastifyRequest<{ Body: checkoutBody }>,
   reply: FastifyReply,
 ) {
-  const requestCheckoutOnStripeSchema = z.object({
-    email: z.email(),
-    username: z.string().max(38),
-    password: z.string().min(4).max(32),
-  });
-
   try {
-    const { email, username, password } = requestCheckoutOnStripeSchema.parse(
-      req.body,
-    );
+    const { email, username, password } = req.body;
 
     const response = await fetch(`${env.JELLYFIN_URL}/Users`, {
       headers: {

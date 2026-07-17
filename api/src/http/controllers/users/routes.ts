@@ -1,6 +1,9 @@
 import z from "zod";
 import { FastifyTypedInstance } from "@/types";
-import { CheckoutOnStripe } from "./checkout-on-stripe-controller";
+import {
+  CheckoutBodySchema,
+  CheckoutOnStripe,
+} from "./checkout-on-stripe-controller";
 
 export async function usersRoutes(app: FastifyTypedInstance) {
   app.post(
@@ -8,18 +11,14 @@ export async function usersRoutes(app: FastifyTypedInstance) {
     {
       schema: {
         tags: ["users"],
-        description: "Create a new checkout of user on Stripe",
-        body: z.object({
-          email: z.email(),
-          username: z.string().max(38),
-          password: z.string().min(4).max(32),
-        }),
+        description: "Create a new checkout on Stripe",
+        body: CheckoutBodySchema,
         response: {
           201: z
             .object({
               url: z.string(),
             })
-            .describe("Checkout Stripe Session created."),
+            .describe("Checkout stripe session created."),
           409: z
             .object({
               message: z.string(),
