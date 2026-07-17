@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  jelly-redis:
+    image: redis:alpine
+    container_name: jelly-redis
+    ports:
+      - 6380:6379
