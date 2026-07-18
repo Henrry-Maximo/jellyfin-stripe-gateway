@@ -22,10 +22,10 @@ export async function WebhookOnStripe(
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
-    const { key } = session.metadata! as { key: string };
-    // console.log("chave: ", key);
+    const { token } = session.metadata! as { token: string };
+    // console.log("chave: ", token);
 
-    const data = await redisClient.get(key);
+    const data = await redisClient.get(token);
 
     if (!data) {
       return reply.status(200).send();
@@ -48,7 +48,7 @@ export async function WebhookOnStripe(
       );
     }
 
-    await redisClient.del(key);
+    await redisClient.del(token); // elimina o token do redis para evitar reprocessamento (idempotência)
   }
 
   return reply.status(200).send();
