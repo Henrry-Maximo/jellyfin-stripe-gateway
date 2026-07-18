@@ -4,11 +4,13 @@ import {
   CheckoutBodySchema,
   CheckoutOnStripe,
 } from "./checkout-on-stripe-controller";
+import { rateLimiter } from "@/http/middlewares/rate-limiter";
 
 export async function usersRoutes(app: FastifyTypedInstance) {
   app.post(
     "/checkout",
     {
+      preHandler: [rateLimiter],
       schema: {
         tags: ["users"],
         description: "Create a new checkout on Stripe",

@@ -1,6 +1,8 @@
 import { env } from "@/env";
+import { redisClient } from "@/lib/redis";
 import { stripe } from "@/lib/stripe";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { randomUUID } from "node:crypto";
 import z from "zod";
 
 export const CheckoutBodySchema = z.object({
@@ -33,10 +35,18 @@ export async function CheckoutOnStripe(
       return reply.status(409).send({ message: "Username already exists." });
     }
 
+    const token = randomUUID();
+    await redisClient.set(
+      token,
+      JSON.stringify({ username, password, email }),
+      "EX", // próximo parâmetro é o tempo de expiração
+      60 * 60, // 1 hora em segundos
+    );
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: env.STRIPE_PRICE_ID, quantity: 1 }],
-      metadata: { email, username, password },
+      metadata: { token },
       success_url: `${env.FRONTEND_URL}/success`,
       cancel_url: `${env.FRONTEND_URL}/cancel`,
     });
