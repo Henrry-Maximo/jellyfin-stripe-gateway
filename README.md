@@ -12,22 +12,25 @@ O sistema funciona de forma assíncrona para garantir a segurança dos dados e q
 [ Usuário ] ➔ Preenche cadastro no Front-end (Vite)
                               │
                               ▼
-[ Back-end (Fastify) ] ➔ Gera link de Checkout seguro com dados no metadata
+[ Back-end (Fastify) ] ➔ Gera token UUID, armazena dados no Redis com TTL de 1h
                               │
                               ▼
 [ Stripe Checkout ] ➔ Usuário realiza o pagamento (Cartão ou Pix)
                               │
                               ▼ 
-[ Back-end (Fastify) ] ➔ Valida assinatura e lê os dados do metadata (Stripe - Webhook disparado após sucesso)
+[ Back-end (Fastify) ] ➔ Valida assinatura, lê token do metadata, busca dados no Redis
                               │
                               ▼
-[ API do Jellyfin ] ➔ Cria a conta ativa no seu servidor automaticamente
+[ API do Jellyfin ] ➔ Cria a conta ativa no servidor automaticamente 
+                              │
+                              ▼ 
+[ Redis ] ➔ Token invalidado imediatamente após criação da conta
 ```
 
 ## Ferramental de Desenvolvimento
 
 * **Front-end:** React, Vite, TypeScript, Tailwind CSS
-* **Back-end:** Node.js, Fastify, TypeScript, Stripe SDK, Swagger, Zod Validation, Vitest
+* **Back-end:** Node.js, Fastify, TypeScript, Stripe SDK, Swagger, Zod, Vitest, Redis Cache (via Docker)
 * **Integração:** Jellyfin REST API
 
 ## Como configurar
@@ -35,9 +38,10 @@ O sistema funciona de forma assíncrona para garantir a segurança dos dados e q
 ## Como rodar localmente
 
 ## Segurança
-- Sem Banco de Dados: O sistema não armazena nenhuma senha ou dado confidencial em banco de dados próprio. Os dados viajam de forma criptografada temporariamente nos metadados seguros do Stripe até a criação no Jellyfin.
-
-- Validação de Webhook: O endpoint do back-end valida rigorosamente a assinatura de cada webhook recebido do Stripe, impedindo requisições falsas.
+- **Token UUID temporário:** Dados sensíveis nunca trafegam no metadata do Stripe. Um token UUID é gerado no checkout, os dados ficam no Redis com TTL de 1 hora e apenas o token vai para o Stripe para que o webhook do Stripe possa enviar.
+- **Validação de Webhook:** O endpoint valida rigorosamente a assinatura de cada webhook recebido do Stripe, impedindo requisições falsas.
+- **Idempotência:** O token é deletado do Redis imediatamente após a criação da conta, garantindo que reenvios do mesmo evento não criem contas duplicadas.
+- **Rate Limiting:** A API possui limite de requisições por IP para proteção contra abuso e ataques DDoS.
 
 ## RFs (requisitos funcionais)
 
@@ -49,15 +53,18 @@ O sistema funciona de forma assíncrona para garantir a segurança dos dados e q
 ## RNFs (requisitos não-funcionais)
 
 - [x] A API deve validar a assinatura do webhook do Stripe antes de processar qualquer evento
-- [ ] Dados sensíveis do usuário não devem trafegar em texto puro nos metadados do Stripe
-- [ ] O sistema deve utilizar um identificador temporário associado a um cache Redis
+- [x] Dados sensíveis do usuário não devem trafegar em texto puro nos metadados do Stripe
+- [x] O sistema deve utilizar Redis como cache temporário para os dados do usuário
+- [ ] O sistema deve ter um job de polling para reprocessar pagamentos não processados pelo webhook
 
 ## Regra de negócio
 
-- [x] A conta no Jellyfin só deve ser criada após confirmação de pagamento pelo Stripe (evento checkout.session.completed)
-- [x] Os dados do usuário (username, email, password) devem trafegar exclusivamente via metadata da sessão do Stripe
+- [x] A conta no Jellyfin só deve ser criada após confirmação de pagamento pelo Stripe
 - [x] Apenas um plano mensal deve estar disponível para assinatura
-- [x] O sistema não deve criar contas duplicadas no Jellyfin para o mesmo email
-- [ ] O token temporário deve ser invalidado imediatamente após a criação da conta ou após a expiração do tempo de vida (TTL)
+- [x] O sistema não deve criar contas duplicadas no Jellyfin para o mesmo username
+- [x] Os dados sensíveis devem ser armazenados no Redis com TTL de 1 hora vinculados a um token UUID
+- [x] O token deve trafegar no metadata do Stripe no lugar dos dados sensíveis
+- [x] O token deve ser invalidado imediatamente após a criação da conta ou expiração do TTL
+- [x] O sistema não deve reprocessar um evento já processado (idempotência)
 
 Desenvolvido com ☕ e TypeScript. Sinta-se livre para abrir Issues ou enviar Pull Requests!
