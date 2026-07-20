@@ -27,7 +27,7 @@ export function Success() {
     <>
       <Helmet title="Pagamento confirmado" />
 
-      <main className="flex h-full flex-col items-center justify-center gap-6 p-8 text-center">
+      <main className="flex min-h-full flex-col items-center justify-center gap-6 p-8 text-center">
         <div className="flex flex-col items-center gap-6">
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-purple-500/20 blur-xl" />

@@ -28,7 +28,7 @@ export function Cancel() {
     <>
       <Helmet title="Pagamento cancelado" />
 
-      <main className="flex h-full flex-col items-center justify-center gap-6 p-8 text-center">
+      <main className="flex flex-col items-center justify-center gap-6 p-8 text-center">
         <div className="flex flex-col items-center gap-6">
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-red-500/20 blur-xl" />
@@ -50,9 +50,18 @@ export function Cancel() {
           <div className="flex flex-col items-center gap-2">
             <div className="relative h-12 w-12">
               <svg className="-rotate-90" viewBox="0 0 36 36" fill="none">
-                <circle cx="18" cy="18" r="16" stroke="currentColor" strokeWidth="2" className="text-red-500/20" />
                 <circle
-                  cx="18" cy="18" r="16"
+                  cx="18"
+                  cy="18"
+                  r="16"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  className="text-red-500/20"
+                />
+                <circle
+                  cx="18"
+                  cy="18"
+                  r="16"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeDasharray="100"

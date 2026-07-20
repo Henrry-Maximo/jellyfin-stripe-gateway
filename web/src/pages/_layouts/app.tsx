@@ -5,7 +5,7 @@ import cinemaVideo from '@/assets/cinema.mp4';
 
 export function AppLayout() {
   return (
-    <div className="grid h-screen grid-cols-1 antialiased lg:grid-cols-2">
+    <div className="grid h-screen grid-cols-1 overflow-hidden antialiased lg:grid-cols-2">
       <div className="relative hidden flex-col items-center justify-center overflow-hidden bg-zinc-950 lg:flex">
         <video
           src={cinemaVideo}
@@ -46,7 +46,7 @@ export function AppLayout() {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col overflow-y-auto">
         <Outlet />
       </div>
     </div>

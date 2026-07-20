@@ -3,8 +3,8 @@ import { app } from "./app";
 import { env } from "./env";
 import { pollingOnStripeJob } from "./jobs/stripe/polling-on-stripe-job";
 
-// Jobs Polling Stripe (15 em 15 minutos)
-nodeCron.schedule("*/15 * * * *", pollingOnStripeJob);
+// Jobs Polling Stripe (5 em 5 minutos)
+nodeCron.schedule("*/5 * * * *", pollingOnStripeJob);
 
 app
   .listen({
