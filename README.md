@@ -55,7 +55,7 @@ O sistema funciona de forma assíncrona para garantir a segurança dos dados e q
 - [x] A API deve validar a assinatura do webhook do Stripe antes de processar qualquer evento
 - [x] Dados sensíveis do usuário não devem trafegar em texto puro nos metadados do Stripe
 - [x] O sistema deve utilizar Redis como cache temporário para os dados do usuário
-- [ ] O sistema deve ter um job de polling para reprocessar pagamentos não processados pelo webhook
+- [x] O sistema deve ter um job de polling para reprocessar pagamentos não processados pelo webhook
 
 ## Regra de negócio
 
