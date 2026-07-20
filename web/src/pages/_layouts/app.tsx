@@ -18,7 +18,7 @@ export function AppLayout() {
         <div className="absolute inset-0 bg-zinc-950/60" />
         <div className="relative z-10 flex h-full w-full flex-col gap-6 border-r-2 border-purple-600 px-4 py-2">
           <header>
-            <p className="text-sm text-zinc-600">Jellyfin Stripe Web.</p>
+            <p className="text-sm text-zinc-600">Jelly Gateway Web.</p>
           </header>
           <main className="z-10 flex flex-1 flex-col items-center justify-center gap-6">
             <img
@@ -28,16 +28,16 @@ export function AppLayout() {
             />
             <div className="text-center">
               <h2 className="text-4xl font-medium tracking-tight text-zinc-200">
-                Jellyfin <span className="text-purple-600">Stripe</span>
+                Jelly <span className="text-purple-600">Gateway</span>
               </h2>
               <p className="text-md text-zinc-500">
-                Sua plataforma de séries, filmes e animes.
+                Sua plataforma de filmes, séries, animes e desenhos.
               </p>
             </div>
           </main>
           <footer className="flex justify-between">
             <p className="text-sm text-zinc-600">
-              © {new Date().getFullYear()} Jellyfin Stripe Gateway.
+              © {new Date().getFullYear()} Jelly Gateway.
             </p>
             <p className="text-sm text-zinc-600">
               Todos os direitos reservados.
