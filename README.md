@@ -1,8 +1,8 @@
-# Jelly Stripe Gateway
+# Jelly Gateway
 
-**Jelly Stripe Gateway** é um gateway de integração leve, moderno e open-source projetado para automatizar a criação de contas no **Jellyfin** através de assinaturas do **Stripe**.
-![alt text](logo.png) 
+**Jelly Gateway** é um gateway de integração leve, moderno e open-source projetado para automatizar a criação de contas no Jellyfin através de pagamentos online utilizando Stripe (cartão de crédito) ou Mercado Pago (PIX).
 - Ideal para administradores de servidores *self-hosted* que desejam automatizar o acesso de usuários e gerenciar cobranças de forma profissional e sem processos manuais.
+![alt text](logo.png) 
 
 ## Fluxo da Aplicação (operação)
 
@@ -31,7 +31,7 @@ O sistema funciona de forma assíncrona para garantir a segurança dos dados e q
 
 * **Front-end:** React, Vite, TypeScript, Tailwind CSS
 * **Back-end:** Node.js, Fastify, TypeScript, Stripe SDK, Swagger, Zod, Vitest, Redis Cache (via Docker)
-* **Integração:** Jellyfin REST API
+* **Integração:** Jellyfin REST API, Stripe API
 
 ## Como configurar
 
@@ -42,6 +42,7 @@ O sistema funciona de forma assíncrona para garantir a segurança dos dados e q
 - **Validação de Webhook:** O endpoint valida rigorosamente a assinatura de cada webhook recebido do Stripe, impedindo requisições falsas.
 - **Idempotência:** O token é deletado do Redis imediatamente após a criação da conta, garantindo que reenvios do mesmo evento não criem contas duplicadas.
 - **Rate Limiting:** A API possui limite de requisições por IP para proteção contra abuso e ataques DDoS.
+- **Polling:** Caso algum webhook não seja entregue (timeout, indisponibilidade da API, etc.), um processo de polling consulta periodicamente o Stripe procurando sessões aprovadas nas últimas horas. Se existir um token correspondente ainda presente no Redis, o pagamento é processado normalmente.
 
 ## RFs (requisitos funcionais)
 
