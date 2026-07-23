@@ -60,6 +60,8 @@ users: [
 - **Rate Limiting:** A API possui limite de requisições por IP para proteção contra abuso e ataques DDoS.
 - **Polling:** Caso algum webhook não seja entregue (timeout, indisponibilidade da API, etc.), um processo de polling consulta periodicamente o Stripe procurando sessões aprovadas nas últimas horas. Se existir um token correspondente ainda presente no Redis, o pagamento é processado normalmente.
 
+# V1
+
 ## RFs (requisitos funcionais)
 
 - [x] O usuário deve poder realizar checkout na plataforma para pagamento
@@ -83,5 +85,21 @@ users: [
 - [x] O token deve trafegar no metadata do Stripe no lugar dos dados sensíveis
 - [x] O token deve ser invalidado imediatamente após a criação da conta ou expiração do TTL
 - [x] O sistema não deve reprocessar um evento já processado (idempotência)
+
+# V2
+
+Está etapa de desenvolvimento altera diretamente a arquitetura do projeto, passando adotar um banco físico para persistência dos dados relacionados aos usuários do serviço Jelly Gateway.
+
+## RFs (requisitos funcionais)
+
+- [ ]
+
+## RNFs (requisitos não-funcionais)
+
+- [ ]
+
+## Regra de negócio
+
+- [ ]
 
 Desenvolvido com ☕ e TypeScript. Sinta-se livre para abrir Issues ou enviar Pull Requests!
