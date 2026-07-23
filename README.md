@@ -6,7 +6,7 @@
 
 ## Fluxo da Aplicação (operação)
 
-O sistema funciona de forma assíncrona para garantir a segurança dos dados e que nenhuma conta seja criada sem a confirmação do pagamento:
+A aplicação foi construída utilizando uma arquitetura orientada a eventos, funcionando de forma assíncrona para garantir a segurança dos dados e que nenhuma conta seja criada sem a confirmação do pagamento:
 
 ```
 [ Usuário ] ➔ Preenche cadastro no Front-end (Vite)
@@ -15,16 +15,32 @@ O sistema funciona de forma assíncrona para garantir a segurança dos dados e q
 [ Back-end (Fastify) ] ➔ Gera token UUID, armazena dados no Redis com TTL de 1h
                               │
                               ▼
-[ Stripe Checkout ] ➔ Usuário realiza o pagamento (Cartão ou Pix)
+[ Stripe / Mercado Pago Checkout ] ➔ Usuário realiza o pagamento (Cartão / Pix)
                               │
                               ▼ 
-[ Back-end (Fastify) ] ➔ Valida assinatura, lê token do metadata, busca dados no Redis
+[ Back-end (Fastify) ] ➔ Persiste o usuário no banco, estabelece gateway utilizado, identificador do usuário, e customerId via token no redis (para que webhook consiga localizar)
+                              │
+                              ▼ 
+[ Back-end (Fastify) - Webhook ] ➔ Valida assinatura, lê token do metadata, busca dados no Redis utilizando o customerId, atualiza o status e cria usuário no Jellyfin estabelecendo seu identificador no banco
                               │
                               ▼
-[ API do Jellyfin ] ➔ Cria a conta ativa no servidor automaticamente 
+[ API do Jellyfin ] ➔ Cria a conta ativa no servidor automaticamente
                               │
                               ▼ 
 [ Redis ] ➔ Token invalidado imediatamente após criação da conta
+```
+
+```schema
+users: [
+  id,
+  customerId,
+  gateway,
+  method,
+  status,
+  id_jellyfin,
+  createAt,
+  updateAt,
+]
 ```
 
 ## Ferramental de Desenvolvimento
