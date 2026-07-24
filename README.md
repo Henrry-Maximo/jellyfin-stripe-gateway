@@ -92,7 +92,7 @@ Está etapa de desenvolvimento altera diretamente a arquitetura do projeto, pass
 
 ## RFs (requisitos funcionais)
 
-- [ ]
+- [ ] O usuário deve pode se cadastrar na plataforma,
 
 ## RNFs (requisitos não-funcionais)
 

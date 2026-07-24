@@ -13,6 +13,7 @@ const envSchema = z.object({
   JELLYFIN_API_KEY: z.string(),
   REDIS_HOST: z.string(),
   REDIS_PORT: z.coerce.number(),
+  DATABASE_URL: z.string()
 });
 
 const _env = envSchema.safeParse(process.env);
