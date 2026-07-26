@@ -20,6 +20,7 @@ import {
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const checkoutForm = z.object({
   email: z.email('E-mail inválido'),
@@ -82,7 +83,7 @@ export function Checkout() {
       <main className="flex flex-col items-center justify-center p-8 lg:p-20">
         <div className="flex w-full max-w-100 flex-col gap-8">
           <header className="flex flex-col gap-2 text-left">
-            <div className="sticky top-0 z-10 flex justify-end py-2">
+            <div className="sticky top-0 z-10 flex justify-end pt-16">
               <ThemeToggle />
             </div>
 
@@ -214,6 +215,15 @@ export function Checkout() {
                 )}
                 Confirmar
               </Button>
+              <p className="text-accent-foreground sticky flex justify-end gap-2 text-xs">
+                Já tem conta?{' '}
+                <Link
+                  className="font-light text-blue-600 hover:underline"
+                  to="/auth/sign-in"
+                >
+                  Acessar
+                </Link>
+              </p>
             </div>
           </form>
           <div className="relative overflow-hidden rounded-xl border border-purple-600/30 to-transparent p-4">

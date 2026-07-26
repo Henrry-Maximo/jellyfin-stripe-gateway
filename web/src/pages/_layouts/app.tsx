@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-import logo from '@/assets/favicon.png';
+import logo from '@/assets/capa.png';
 import cinemaVideo from '@/assets/cinema.mp4';
 
 export function AppLayout() {
@@ -26,9 +26,23 @@ export function AppLayout() {
               className="h-62 w-62"
               alt="logo cycle finance app"
             />
-            <div className="text-center">
-              <h2 className="text-4xl font-medium tracking-tight text-zinc-200">
-                Jelly <span className="text-purple-600">Gateway</span>
+            <div className="space-y-2 text-center">
+              <h2 className="flex items-center justify-center gap-1 text-5xl font-extralight tracking-tight text-zinc-200">
+                Jelly{' '}
+                <div className="rounded-sm px-2 py-1">
+                  <span
+                    className="text-transparent"
+                    style={{ WebkitTextStroke: '0.4px white' }}
+                  >
+                    Gate
+                  </span>
+                  <span
+                    className="text-transparent"
+                    style={{ WebkitTextStroke: '0.4px white' }}
+                  >
+                    way
+                  </span>
+                </div>
               </h2>
               <p className="text-md text-zinc-500">
                 Sua plataforma de filmes, séries, animes e desenhos.
@@ -46,7 +60,7 @@ export function AppLayout() {
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col overflow-y-auto">
+      <div className="flex flex-1 flex-col justify-start overflow-y-auto md:justify-center">
         <Outlet />
       </div>
     </div>
