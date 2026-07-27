@@ -1,4 +1,5 @@
 import { fastifyCors } from "@fastify/cors";
+
 import fastify, { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import z, { ZodError } from "zod";
 

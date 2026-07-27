@@ -12,6 +12,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  MEMBER
+  ADMIN
+}
+
 enum UserStatus {
   PENDING
   ACTIVE
@@ -40,6 +45,7 @@ model User {
   email        String     @unique
   username     String     @unique
   passwordHash String     @map("password_hash")
+  role         UserRole
   status       UserStatus
 
   subscription Subscription?

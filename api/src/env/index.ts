@@ -13,13 +13,13 @@ const envSchema = z.object({
   JELLYFIN_API_KEY: z.string(),
   REDIS_HOST: z.string(),
   REDIS_PORT: z.coerce.number(),
-  DATABASE_URL: z.string().optional().default(""),
+  DATABASE_URL: z.string(),
 });
 
 const _env = envSchema.safeParse(process.env);
 
 if (_env.success === false) {
-  console.error("❌ Invalid environment variables", _env.error.format());
+  console.error("❌ Invalid environment variables", z.treeifyError(_env.error));
 
   throw new Error("Invalid environment variables.");
 }
