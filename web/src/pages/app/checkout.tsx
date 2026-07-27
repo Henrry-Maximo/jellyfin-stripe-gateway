@@ -20,7 +20,6 @@ import {
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 
 const checkoutForm = z.object({
   email: z.email('E-mail inválido'),
