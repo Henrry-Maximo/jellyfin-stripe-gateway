@@ -44,8 +44,8 @@ export function Success() {
               Pagamento confirmado!
             </h1>
             <p className="text-muted-foreground max-w-sm text-sm">
-              Sua conta está sendo criada. Em breve você receberá um e-mail com
-              as instruções de acesso à plataforma Jellyfin.
+              Sua conta está sendo criada. Por favor, utilize os dados que
+              acabou de fornecer para logar na plataforma.
             </p>
           </div>
 

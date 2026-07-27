@@ -215,7 +215,7 @@ export function Checkout() {
                 )}
                 Confirmar
               </Button>
-              <p className="text-accent-foreground sticky flex justify-end gap-2 text-xs">
+              {/* <p className="text-accent-foreground sticky flex justify-end gap-2 text-xs">
                 Já tem conta?{' '}
                 <Link
                   className="font-light text-blue-600 hover:underline"
@@ -223,7 +223,7 @@ export function Checkout() {
                 >
                   Acessar
                 </Link>
-              </p>
+              </p> */}
             </div>
           </form>
           <div className="relative overflow-hidden rounded-xl border border-purple-600/30 to-transparent p-4">
