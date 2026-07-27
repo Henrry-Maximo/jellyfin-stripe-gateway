@@ -1,5 +1,10 @@
+import nodeCron from "node-cron";
 import { app } from "./app";
 import { env } from "./env";
+import { pollingOnStripeJob } from "./jobs/stripe/polling-on-stripe-job";
+
+// Jobs Polling Stripe (5 em 5 minutos)
+nodeCron.schedule("*/5 * * * *", pollingOnStripeJob);
 
 app
   .listen({

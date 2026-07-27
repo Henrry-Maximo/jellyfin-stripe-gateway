@@ -1,6 +1,17 @@
 version: "3"
 
 services:
+  api-jelly-gateway-pg:
+    image: bitnami/postgresql
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=apijellygateway
+    # volumes:
+    #   - pg_data:/bitnami/postgresql
+
   jelly-redis:
     image: redis:alpine
     container_name: jelly-redis

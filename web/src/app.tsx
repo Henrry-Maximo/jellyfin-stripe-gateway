@@ -12,8 +12,8 @@ import { router } from './routes';
 export function App() {
   return (
     <HelmetProvider>
-      <ThemeProvider storageKey="jellyfin-stripe-theme" defaultTheme="dark">
-        <Helmet titleTemplate="%s | Jellyfin Stripe Gateway" />
+      <ThemeProvider storageKey="jelly-theme" defaultTheme="dark">
+        <Helmet titleTemplate="%s | Jelly Gateway" />
         <Toaster richColors closeButton />
 
         <QueryClientProvider client={queryClient}>

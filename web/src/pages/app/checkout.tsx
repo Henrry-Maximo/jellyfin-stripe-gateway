@@ -14,10 +14,13 @@ import {
   CheckCircleIcon,
   EyeIcon,
   EyeSlashIcon,
+  CreditCardIcon,
+  CurrencyCircleDollarIcon,
 } from '@phosphor-icons/react';
 import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const checkoutForm = z.object({
   email: z.email('E-mail inválido'),
@@ -37,6 +40,9 @@ type CheckoutForm = z.infer<typeof checkoutForm>;
 
 export function Checkout() {
   const [showPassword, setShowPassword] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<
+    'stripe' | 'mercadopago' | null
+  >(null);
 
   const {
     register,
@@ -74,10 +80,10 @@ export function Checkout() {
     <>
       <Helmet title="Checkout" />
 
-      <main className="flex h-full flex-col items-center justify-center p-8 lg:p-20">
+      <main className="flex flex-col items-center justify-center p-8 lg:p-20">
         <div className="flex w-full max-w-100 flex-col gap-8">
           <header className="flex flex-col gap-2 text-left">
-            <div className="flex justify-end">
+            <div className="sticky top-0 z-10 flex justify-end pt-16">
               <ThemeToggle />
             </div>
 
@@ -167,16 +173,58 @@ export function Checkout() {
               </Field>
             </div>
 
-            <Button
-              type="submit"
-              disabled={isSubmitting || isFormEmpty}
-              className="flex h-11 w-full flex-row items-center justify-center gap-2 bg-zinc-900 text-white shadow-sm transition-all hover:cursor-pointer hover:border-2 hover:border-purple-600 hover:bg-zinc-800 hover:text-purple-500 active:scale-[0.98] dark:hover:border-purple-800 dark:hover:text-purple-600"
-            >
-              {isSubmitting && (
-                <CircleNotchIcon className="h-4 w-4 animate-spin" />
-              )}
-              Assinar agora
-            </Button>
+            <div className="flex flex-col gap-3">
+              <p className="text-muted-foreground text-xs tracking-widest uppercase">
+                Forma de pagamento
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod('stripe')}
+                  className={`flex h-11 cursor-pointer items-center justify-center gap-2 rounded-md bg-[#635BFF] px-4 text-sm font-medium text-white transition-all hover:brightness-110 active:scale-[0.98] ${
+                    paymentMethod === 'stripe'
+                      ? 'ring-offset-background ring-2 ring-[#635BFF] ring-offset-2 brightness-110'
+                      : 'opacity-50 hover:opacity-100'
+                  }`}
+                >
+                  <CreditCardIcon className="h-4 w-4" />
+                  Stripe
+                </button>
+                <button
+                  type="button"
+                  disabled
+                  onClick={() => setPaymentMethod('mercadopago')}
+                  className={`flex h-11 cursor-pointer items-center justify-center gap-2 rounded-md bg-[#009EE3] px-4 text-sm font-semibold text-white transition-all hover:brightness-110 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-gray-400 ${
+                    paymentMethod === 'mercadopago'
+                      ? 'ring-offset-background ring-2 ring-[#009EE3] ring-offset-2 brightness-110'
+                      : 'opacity-50 hover:opacity-100'
+                  }`}
+                >
+                  <CurrencyCircleDollarIcon className="h-4 w-4" />
+                  Mercado Pago
+                </button>
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isSubmitting || isFormEmpty || !paymentMethod}
+                className="flex h-11 w-full cursor-pointer items-center justify-center gap-2 bg-zinc-900 text-white shadow-sm transition-all hover:border-2 hover:border-purple-600 hover:bg-zinc-800 hover:text-purple-500 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:hover:border-purple-800 dark:hover:text-purple-600"
+              >
+                {isSubmitting && (
+                  <CircleNotchIcon className="h-4 w-4 animate-spin" />
+                )}
+                Confirmar
+              </Button>
+              {/* <p className="text-accent-foreground sticky flex justify-end gap-2 text-xs">
+                Já tem conta?{' '}
+                <Link
+                  className="font-light text-blue-600 hover:underline"
+                  to="/auth/sign-in"
+                >
+                  Acessar
+                </Link>
+              </p> */}
+            </div>
           </form>
           <div className="relative overflow-hidden rounded-xl border border-purple-600/30 to-transparent p-4">
             <div className="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-purple-600/10 blur-2xl" />
